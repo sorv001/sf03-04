@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "First Name": "Saurabh",
+    "Last Name": "Singh",
+    "Email": "srv2699@gmail.com",
+    "Phone": "9548950844",
+    "Role": "Super Admin",
+    "Address": "Meerut"
+  },
+  {
+    "id": "2",
+    "First Name": "Saurabh",
+    "Last Name": "Singh",
+    "Email": "srv2699@gmail.com",
+    "Phone": "9548950844",
+    "Role": "Admin",
+    "Address": "Meerut"
+  },
+  {
+    "id": "3",
+    "First Name": "Saurabh",
+    "Last Name": "Singh",
+    "Email": "srv2699@gmail.com",
+    "Phone": "9548950844",
+    "Role": "Subscriber",
+    "Address": "Meerut"
+  }
+]
