@@ -1,59 +1,60 @@
 enum Role {
-  SUPERADMIN,
-  ADMIN,
-  SUBSCRIBER,
+  superadmin = "superadmin",
+  admin = "admin",
+  subscriber = "subscriber",
 }
+
 const DATA = [
   {
-    id: "1",
+    id: 1,
     firstName: "Saurabh",
     middleName: "",
     lastName: "Singh",
     email: "srv2699@gmail.com",
-    phoneNumber: "9548950844",
-    role: Role.SUBSCRIBER,
+    phoneNumber: 9548950844,
+    role: Role.subscriber,
     address: "Meerut",
   },
   {
-    id: "2",
+    id: 2,
     firstName: "Sahil",
     middleName: "",
     lastName: "Garg",
     email: "garg.sahil@sourcefuse.com",
-    phoneNumber: "9843938499",
-    role: Role.ADMIN,
+    phoneNumber: 9843938499,
+    role: Role.admin,
     address: "Panipat",
   },
   {
-    id: "3",
+    id: 3,
     firstName: "Vivek",
     middleName: "Singh",
     lastName: "Bisht",
     email: "bisht.vivek@gmail.com",
-    phoneNumber: "809090809",
-    role: Role.SUBSCRIBER,
+    phoneNumber: 809090809,
+    role: Role.subscriber,
     address: "Mohali",
   },
   {
-    id: "4",
+    id: 4,
     firstName: "Hemdeep",
     middleName: "",
     lastName: "saini",
     email: "saini.hemdeep@gmail.com",
-    phoneNumber: "809079809",
-    role: Role.SUPERADMIN,
+    phoneNumber: 809079809,
+    role: Role.superadmin,
     address: "Faridabad",
   },
 ];
 
 interface User {
-  id: string;
+  id: number;
   firstName: string;
   middleName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
-  role: Role;
+  phoneNumber: number;
+  role: string;
   address: string;
 }
 
@@ -66,13 +67,16 @@ function FormatDate() {
     }, 1000);
   };
 }
-let users: any = [];
-class Crud<T> {
+
+var users: any = [];
+
+class CRUD<T> {
   items: Array<T>;
 
   constructor() {
     this.items = [];
   }
+
   @FormatDate()
   create(e: T): void {
     this.items.push(e);
@@ -82,6 +86,7 @@ class Crud<T> {
     this.items[i] = e;
     showTable();
   }
+
   delete(i: number): void {
     this.items.splice(i, 1);
     console.log(this.items);
@@ -90,11 +95,10 @@ class Crud<T> {
 }
 
 function showTable() {
-  //function specific to type of object
-  var table = document.createElement("table"); // TS knows that only a generic html element is returned by createElement, hence we need to specify
+  var table = document.createElement("table");
   table.className = "table";
 
-  // EXTRACT VALUE FOR HTML HEADER.
+  //Header Elements
   let tr = table.insertRow(-1);
   let headerElements = [
     "ID",
@@ -108,33 +112,32 @@ function showTable() {
   ];
 
   for (let i = 0; i < headerElements.length; i++) {
-    let th = document.createElement("th"); // TABLE HEADER.
+    let th = document.createElement("th");
     th.innerHTML = headerElements[i];
     tr.appendChild(th);
   }
-  let edit_column = document.createElement("th"); // TABLE HEADER.
+
+  let edit_column = document.createElement("th");
   edit_column.innerHTML = "Edit";
   tr.appendChild(edit_column);
-  let delete_column = document.createElement("th"); // TABLE HEADER.
+  let delete_column = document.createElement("th");
   delete_column.innerHTML = "Delete";
   tr.appendChild(delete_column);
-  let save_column = document.createElement("th"); // TABLE HEADER.
+  let save_column = document.createElement("th");
   save_column.innerHTML = "Save";
   tr.appendChild(save_column);
-  let thCancel = document.createElement("th"); // TABLE HEADER.
-  thCancel.innerHTML = "Cancel";
-  tr.appendChild(thCancel);
+  let cancel_column = document.createElement("th");
+  cancel_column.innerHTML = "Cancel";
+  tr.appendChild(cancel_column);
 
   save_column.style.display = "none";
-  thCancel.style.display = "none";
   save_column.id = "headerSave";
-  thCancel.id = "headerCancel";
-
-  //populate from json file
+  cancel_column.style.display = "none";
+  cancel_column.id = "headerCancel";
+  //populating data from json file
 
   for (let i = 0; i < users.items.length; i++) {
     tr = table.insertRow(-1);
-
     tr.id = `row${i}`;
 
     let cell1 = tr.insertCell(-1);
@@ -168,7 +171,7 @@ function showTable() {
     cell6.id = `row${i}Phone`;
 
     let cell7 = tr.insertCell(-1);
-    let role = Role[users.items[i].role];
+    let role = users.items[i].role;
     cell7.innerHTML = role;
     cell7.id = `row${i}Role`;
 
@@ -186,9 +189,10 @@ function showTable() {
     cell7.className = "editable";
     cell8.className = "editable";
 
-    //BUTTONS ON EACH ROW
+    //Buttons on each Row
 
-    //EDIT
+    //EDit button
+
     let Edit_btn = tr.insertCell(-1);
     let editButton = document.createElement("button");
     editButton.type = "button";
@@ -198,7 +202,8 @@ function showTable() {
       editRow(i);
     });
 
-    //DELETE
+    //Delete
+
     let Delete_btn = tr.insertCell(-1);
     let deleteButton = document.createElement("button");
     deleteButton.type = "button";
@@ -219,19 +224,18 @@ function showTable() {
       users.delete(i);
     });
 
-    //SAVE
+    //Save Button
+
     let Save_btn = tr.insertCell(-1);
     let saveButton = document.createElement("button");
     saveButton.type = "button";
     saveButton.innerHTML = "Save";
     Save_btn.className = "hiddenElements";
-    Save_btn.id = "saveButtonRow" + i;
+    Save_btn.id = `saveButtonRow${i}`;
     Save_btn.appendChild(saveButton);
-    Save_btn.style.display = "none";
     saveButton.addEventListener("click", function () {
       let updatedRowObject = getCurrentRowData(i);
       console.log(updatedRowObject);
-
       users.update(i, updatedRowObject);
 
       document.getElementById("saveButtonRow" + i)!.style.display = "none";
@@ -240,13 +244,14 @@ function showTable() {
       document.getElementById("headerCancel")!.style.display = "none";
     });
 
-    //CANCEL
+    //Cancel
+
     var Cancel_btn = tr.insertCell(-1);
     var cancelButton = document.createElement("button");
     cancelButton.type = "button";
-    cancelButton.innerHTML = "Cancel";
-    Cancel_btn.className = "hiddenElements";
-    Cancel_btn.id = "cancelButtonRow" + i;
+    cancelButton.innerHTML = "cancel";
+    Cancel_btn.className = "hidden";
+    Cancel_btn.id = "CancelButtonRow" + i;
     Cancel_btn.appendChild(cancelButton);
     Cancel_btn.style.display = "none";
     cancelButton.addEventListener("click", function () {
@@ -260,21 +265,21 @@ function showTable() {
   let loadButton = <HTMLButtonElement>(
     document.getElementById("showDataButton")!
   );
+
   loadButton.value = "Refresh";
 }
+
 function getCurrentRowData(no: number) {
-  let rowId = document.getElementById("row" + no + "Id")!.innerHTML;
+  let roww = document.getElementById(`row${no}Id`)!.innerHTML;
+  let rowId = parseInt(roww);
   let rowFname = document.getElementById("row" + no + "Fname")!.innerHTML;
   let rowMname = document.getElementById("row" + no + "Mname")!.innerHTML;
   let rowLname = document.getElementById("row" + no + "Lname")!.innerHTML;
   let rowEmail = document.getElementById("row" + no + "Email")!.innerHTML;
-  let rowPhone = document.getElementById("row" + no + "Phone")!.innerHTML;
+  let rowP = document.getElementById("row" + no + "Phone")!.innerHTML;
+  let rowPhone = parseInt(rowP);
   let rowRole = document.getElementById("row" + no + "Role")!.innerHTML;
   let rowAddress = document.getElementById("row" + no + "Address")!.innerHTML;
-  let r = -1;
-  if (rowRole.toLowerCase() === "superadmin") r = 0;
-  else if (rowRole.toLowerCase() === "admin") r = 1;
-  else r = 2;
 
   let obj: User = {
     id: rowId,
@@ -283,7 +288,7 @@ function getCurrentRowData(no: number) {
     lastName: rowLname,
     email: rowEmail,
     phoneNumber: rowPhone,
-    role: r,
+    role: rowRole,
     address: rowAddress,
   };
 
@@ -291,10 +296,11 @@ function getCurrentRowData(no: number) {
 }
 
 function cancelRow(no: number) {
-  let row = "row" + no;
+  let row = `row${no}`;
   let currentRow = document.getElementById(row)!;
   currentRow.style.background = "white";
-  //REVERT BACK TO ORIGINAL CONTENT
+
+  //Reverting back
 
   let rowId = document.getElementById("row" + no + "Id")!;
   let rowFname = document.getElementById("row" + no + "Fname")!;
@@ -311,13 +317,14 @@ function cancelRow(no: number) {
   rowLname.innerHTML = users.items[no].lastName;
   rowEmail.innerHTML = users.items[no].email;
   rowPhone.innerHTML = users.items[no].phoneNumber;
-  rowRole.innerHTML = Role[users.items[no].role];
+  rowRole.innerHTML = users.items[no].role;
   rowAddress.innerHTML = users.items[no].address;
 
-  //   //MAKE ROWS NON EDITABLE
+  //Makes Row ineditable
+
   currentRow.setAttribute("contenteditable", "false");
 
-  //HIDE SAVE AND DELETE COLUMNS
+  //Hide save and delete columns
 
   document.getElementById("saveButtonRow" + no)!.style.display = "none";
   document.getElementById("cancelButtonRow" + no)!.style.display = "none";
@@ -325,17 +332,9 @@ function cancelRow(no: number) {
   document.getElementById("headerCancel")!.style.display = "none";
 }
 
-//MAKES THE CONTENT OF CURRENT ROW EDITABLE
 function editRow(no: number) {
-  let currentRow = document.getElementById("row" + no)!;
+  let currentRow = document.getElementById(`row${no}`)!;
   currentRow.style.background = "green";
-
-  //SHOW SAVE & CANCEL BUTTON
-  document.getElementById("saveButtonRow" + no)!.style.display = "inline-block";
-  document.getElementById("cancelButtonRow" + no)!.style.display =
-    "inline-block";
-  document.getElementById("headerSave")!.style.display = "inline-block";
-  document.getElementById("headerCancel")!.style.display = "inline-block";
 
   //MAKE ROW EDITABLE
 
@@ -343,10 +342,10 @@ function editRow(no: number) {
 }
 
 async function main() {
-  users = new Crud<User>(); //creating object of crud with generic type of user
+  users = new CRUD<User>();
   DATA.forEach(function (e: User) {
     users.create(e);
-  }); //pushing objects of user type in array
+  });
   console.log(users);
   showTable();
 }
