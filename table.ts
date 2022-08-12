@@ -320,7 +320,7 @@ function cancelRow(no: number) {
   rowRole.innerHTML = users.items[no].role;
   rowAddress.innerHTML = users.items[no].address;
 
-  //Makes Row ineditable
+  //Makes Row non editable
 
   currentRow.setAttribute("contenteditable", "false");
 
